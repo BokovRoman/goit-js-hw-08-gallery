@@ -3,12 +3,16 @@ import images from "./gallery-items.js";
 
 const galleryContainerRef = document.querySelector('.js-gallery');
 const lightboxRef = document.querySelector('.js-lightbox');
+const closeModalBtnRef = document.querySelector('[data-action="close-lightbox"]');
+const lightBoxImageRef = document.querySelector('.lightbox__image');
+const lightBoxOverlayRef = document.querySelector('.lightbox__overlay');
+
 
 const imageMarkup=createGalleryMarkup(images);
 galleryContainerRef.insertAdjacentHTML('beforeend', imageMarkup);
 
 galleryContainerRef.addEventListener('click', onContainerClick);
-
+closeModalBtnRef.addEventListener('click', closeGalleryModal);
 // console.log(createGalleryMarkup(images));
 // // createGalleryMarkup(images);
 
@@ -40,7 +44,10 @@ function onContainerClick(e) {
   if (e.target.nodeName!=='IMG') {
     return;
   };
-    openLightBox()
+
+  openLightBox();
+
+  showlightboxImage(e.target.dataset.source, e.target.alt);
     console.log(e.target.dataset.source);
     
     galleryContainerRef.src = e.target.dataset.source;
@@ -50,4 +57,13 @@ function openLightBox() {
   lightboxRef.classList.add('is-open');
 };
 
+function closeGalleryModal() {
+  lightboxRef.classList.remove('is-open');
+  showlightboxImage();
+};
+
+function showlightboxImage(src,alt) {
+  lightBoxImageRef.src = src;
+  lightBoxImageRef.alt = alt;
+};
 
