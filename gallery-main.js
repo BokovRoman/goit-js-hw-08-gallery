@@ -19,7 +19,7 @@ lightBoxOverlayRef.addEventListener('click', onOverlayClick);
 // // createGalleryMarkup(images);
 
 function createGalleryMarkup(images) {
- return images.map(image => {
+ return images.map((image, index) => {
     return `
     <li class="gallery__item">
       <a
@@ -31,6 +31,7 @@ function createGalleryMarkup(images) {
           src="${image.preview}"
           data-source="${image.original}"
           alt="${image.description}"
+          data-index="${image.index}"
         />
       </a>
     </li>
@@ -51,8 +52,11 @@ function onContainerClick(e) {
 
   showlightboxImage(e.target.dataset.source, e.target.alt);
     console.log(e.target.dataset.source);
-    
-    galleryContainerRef.src = e.target.dataset.source;
+  
+  let modalLink = e.target.dataset.source;
+  lightBoxImageRef.src = modalLink;
+  lightBoxImageRef.dataset.index = e.target.dataset.index;
+    // lightBoxImageRef.src = e.target.dataset.source;
 };
 
 function openLightBox() {
@@ -86,4 +90,42 @@ function onKeyPressDown(e) {
   if (e.code === ESC_KEY_CODE) {
     closeGalleryModal();
   }
+
+  if (e.code === "ArrowLeft") {
+    arrowLeft();
+  }
+  if (e.code === "ArrowRight") {
+    arrowRight();
+  }
+};
+
+// function setNewSrc(step, index) {
+//   lightBoxImageRef.dataset.index = `${index + step}`;
+//   lightBoxImageRef.src = images[index + step].original;
+// };
+
+function arrowLeft() {
+  let index = +lightBoxImageRef.dataset.index;
+  if (index === 0) {
+    // setNewSrc(0, images.length - 1);
+    // return
+
+    index = images.length - 1;
+    lightBoxImageRef.src = images[index].original;
+  }
+  console.log(index);
+  // setNewSrc(-1, index);
+};
+
+function arrowRight() {
+  let index = +lightBoxImageRef.dataset.index;
+  if (index >0) {
+    // setNewSrc(0, 0);
+    // return
+
+    index -= 1;
+    lightBoxImageRef.src = images[index].original;
+  }
+  console.log(index);
+  // setNewSrc(1, index);
 };
