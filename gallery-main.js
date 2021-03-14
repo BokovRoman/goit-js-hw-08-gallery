@@ -13,6 +13,8 @@ galleryContainerRef.insertAdjacentHTML('beforeend', imageMarkup);
 
 galleryContainerRef.addEventListener('click', onContainerClick);
 closeModalBtnRef.addEventListener('click', closeGalleryModal);
+lightBoxOverlayRef.addEventListener('click', onOverlayClick);
+
 // console.log(createGalleryMarkup(images));
 // // createGalleryMarkup(images);
 
@@ -54,10 +56,14 @@ function onContainerClick(e) {
 };
 
 function openLightBox() {
+  window.addEventListener('keydown', onKeyPressDown);
+
   lightboxRef.classList.add('is-open');
 };
 
 function closeGalleryModal() {
+  window.removeEventListener('keydown', onKeyPressDown);
+  
   lightboxRef.classList.remove('is-open');
   showlightboxImage();
 };
@@ -67,3 +73,17 @@ function showlightboxImage(src,alt) {
   lightBoxImageRef.alt = alt;
 };
 
+function onOverlayClick(e) {
+  if (e.currentTarget === e.target) {
+    closeGalleryModal();
+  }
+};
+
+function onKeyPressDown(e) {
+  console.log(e.code);
+  const ESC_KEY_CODE = "Escape";
+
+  if (e.code === ESC_KEY_CODE) {
+    closeGalleryModal();
+  }
+};
