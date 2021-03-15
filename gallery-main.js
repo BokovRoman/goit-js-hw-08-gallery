@@ -19,7 +19,7 @@ lightBoxOverlayRef.addEventListener('click', onOverlayClick);
 // // createGalleryMarkup(images);
 
 function createGalleryMarkup(images) {
- return images.map((image, index) => {
+ return images.map((image,index) => {
     return `
     <li class="gallery__item">
       <a
@@ -31,7 +31,7 @@ function createGalleryMarkup(images) {
           src="${image.preview}"
           data-source="${image.original}"
           alt="${image.description}"
-          data-index="${image.index}"
+          data-index="${index}"
         />
       </a>
     </li>
@@ -41,7 +41,10 @@ function createGalleryMarkup(images) {
   
   // console.log(markup[1]);
 };
-  
+
+let indexImage = null;
+
+
 function onContainerClick(e) {
     e.preventDefault();
   if (e.target.nodeName!=='IMG') {
@@ -70,9 +73,10 @@ function closeGalleryModal() {
   
   lightboxRef.classList.remove('is-open');
   showlightboxImage();
+  indexImage = null;
 };
 
-function showlightboxImage(src,alt) {
+function showlightboxImage(src = "", alt = "")  {
   lightBoxImageRef.src = src;
   lightBoxImageRef.alt = alt;
 };
@@ -99,33 +103,30 @@ function onKeyPressDown(e) {
   }
 };
 
-// function setNewSrc(step, index) {
-//   lightBoxImageRef.dataset.index = `${index + step}`;
-//   lightBoxImageRef.src = images[index + step].original;
-// };
+
+const imagesLen = images.length - 1;
+console.log(imagesLen);
 
 function arrowLeft() {
-  let index = +lightBoxImageRef.dataset.index;
-  if (index === 0) {
-    // setNewSrc(0, images.length - 1);
-    // return
-
-    index = images.length - 1;
-    lightBoxImageRef.src = images[index].original;
+  if (indexImage === null) {
+    indexImage = +lightBoxImageRef.dataset.index;
+    indexImage -= 1;
   }
-  console.log(index);
-  // setNewSrc(-1, index);
+  else if(indexImage < 0) {
+    indexImage = imagesLen;
+  }
+  showlightboxImage(images[indexImage].original, images[indexImage].description);
+  console.log(indexImage);
 };
 
 function arrowRight() {
-  let index = +lightBoxImageRef.dataset.index;
-  if (index >0) {
-    // setNewSrc(0, 0);
-    // return
-
-    index -= 1;
-    lightBoxImageRef.src = images[index].original;
+  if (indexImage === null) {
+    indexImage = +lightBoxImageRef.dataset.index;
+    indexImage += 1;
   }
-  console.log(index);
-  // setNewSrc(1, index);
+  else if(indexImage >imagesLen){
+    indexImage = 0;
+  }
+  showlightboxImage(images[indexImage].original, images[indexImage].description);
+  console.log(indexImage);
 };
