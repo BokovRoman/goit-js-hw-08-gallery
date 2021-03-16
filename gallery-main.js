@@ -108,25 +108,20 @@ const imagesLen = images.length - 1;
 console.log(imagesLen);
 
 function arrowLeft() {
-  if (indexImage === null) {
-    indexImage = +lightBoxImageRef.dataset.index;
+  if (indexImage === null) indexImage = +lightBoxImageRef.dataset.index;
     indexImage -= 1;
-  }
-  else if(indexImage < 0) {
-    indexImage = imagesLen;
-  }
+  if(indexImage < 0) indexImage = imagesLen;
   showlightboxImage(images[indexImage].original, images[indexImage].description);
   console.log(indexImage);
 };
 
 function arrowRight() {
-  if (indexImage === null) {
-    indexImage = +lightBoxImageRef.dataset.index;
+  if (indexImage === null) indexImage = +lightBoxImageRef.dataset.index;
     indexImage += 1;
-  }
-  else if(indexImage >imagesLen){
-    indexImage = 0;
-  }
+  
+  if(indexImage >imagesLen) indexImage = 0;
+
   showlightboxImage(images[indexImage].original, images[indexImage].description);
   console.log(indexImage);
 };
+
